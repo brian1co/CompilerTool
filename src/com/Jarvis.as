@@ -69,6 +69,11 @@ package com
 			eventer.addEventListener(GlobalEvent.STARTLOAD_SUCCESS,startLoadingComplete);
 			UIManager.showView(ModuleDefine.StartLoading);
 		}
+		
+		protected static function startLoadingComplete(event:Event):void
+		{
+			
+		}
 		/**
 		 * 加载界面 
 		 * @param viewId

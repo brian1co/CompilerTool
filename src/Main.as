@@ -5,7 +5,7 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
-	[SWF( width="1000" , height="600",  frameRate="50", backgroundColor="#000000")]
+	[SWF( width="1000" , height="600",  frameRate="50", backgroundColor="#000000")] 
 	public class Main extends Sprite
 	{
 		public function Main()
