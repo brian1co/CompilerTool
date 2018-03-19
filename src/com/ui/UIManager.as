@@ -183,7 +183,7 @@ package com.ui
 			if (viewModel)
 			{
 //				trace(viewModel);
-				Jarvis.loadView(viewId, function():void {
+				Jarvis.loadView(viewId, function():void { 
 					showModule(viewModel, isBlur,layer);
 //					SoundManager.getInstance().playSceneMusic(viewId);
 				})
