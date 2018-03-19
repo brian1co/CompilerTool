@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<items>
+	<!-- 功能用1开头 -->
+	<item id="10010" moduleName="main" chinaName="主界面" developer="黎涵" type="1" openLevel="1" resources="" openGuideId="0" openTxt="0" des=""/>
+	<item id="10020" moduleName="startLoading" chinaName="加载界面" developer="黎涵" type="3" openLevel="1" resources="" openGuideId="0" openTxt="0" des=""/>
+	
+	
+</items>

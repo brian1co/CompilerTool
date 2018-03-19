@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="CompilerTool.as" projectUUID="a2d6aac3-052c-41f2-98bd-4864a6999969" version="11">
+<actionScriptProperties analytics="false" mainApplicationPath="Main.as" projectUUID="a2d6aac3-052c-41f2-98bd-4864a6999969" version="11">
   <compiler additionalCompilerArguments="-locale en_US" advancedTelemetry="false" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="true" useDebugRSLSwfs="true" useFlashSDK="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
@@ -35,6 +35,9 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
+    <application path="Main.as">
+      <airExcludes/>
+    </application>
     <application path="CompilerTool.as">
       <airExcludes/>
     </application>
@@ -48,6 +51,10 @@
       <airSettings airCertificatePath="E:/P/brian.li.p12" airTimestamp="false" anePathSet="true" version="1">
         <airExcludes/>
         <anePaths/>
+        <newLaunchParams/>
+        <modifiedLaunchParams/>
+        <newPackagingParams/>
+        <modifiedPackagingParams/>
       </airSettings>
       <actionScriptSettings version="1"/>
     </buildTarget>
