@@ -9,6 +9,7 @@ package com.ui
 	import com.greensock.TweenMax;
 	import com.manager.FrameManager;
 	import com.manager.SceneManager;
+	import com.ui.module.main.MainModule;
 	import com.ui.module.startLoading.StartLoadingModule;
 	
 	import flash.display.Bitmap;
@@ -67,13 +68,14 @@ package com.ui
 		/**默认舞台宽*/
 		public static const STAGE_W:int=1000;
 		/**默认舞台高*/
-		public static const STAGE_H:int=600;
+		public static const STAGE_H:int=610;
 			
 		public static var stage:Stage;
 		public static var main:Main;
 		private static var curViewId:int;
 		private static var currentModuleId:int;
 		private static var _loadView:StartLoadingModule;
+		private static var _mainView:MainModule;
 		public static function init(m:Main):void
 		{
 			main=m;
@@ -209,12 +211,22 @@ package com.ui
 			else if(viewModel.type == ModuleDefine.LOAD) {
 				if(_loadView)return;
 				_loadView = $view as StartLoadingModule;
+//				_loadView.showLoadIcon(true);
 				addToLayer(loadView,LAYER_TOOL);
-				Jarvis.noticeEvent(GlobalEvent.STARTLOAD_SUCCESS);
+				UIManager.showMainModule();
 			}else{
 				FrameManager.getInstance().closeAllFrame();
 				SceneManager.getInstance().showScene($view);
 			}
+		}
+		JUse static function showMainModule():void{
+			var viewId:int = ModuleDefine.Main;
+			var viewModel:ViewModel=Jarvis.model.getViewModel(viewId);
+			Jarvis.loadView(viewId, function():void { 
+				_mainView = getView(viewModel.moduleName) as MainModule;
+				addToLayer(_mainView,LAYER_BUILD);
+//				_loadView.showLoadIcon(false);
+			})
 		}
 		public static function get loadView():StartLoadingModule{
 			return _loadView;

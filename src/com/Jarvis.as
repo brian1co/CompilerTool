@@ -13,6 +13,7 @@ package com
 	import com.ui.UIManager;
 	import com.util.AssetsCallBack;
 	
+	import flash.debugger.enterDebugger;
 	import flash.events.Event;
 	
 	import morn.core.handlers.Handler;
@@ -29,7 +30,6 @@ package com
 		private static var eventer:Eventer;
 		private static var path:PathManager;
 		private static var moduleLoader:ModuleLoading;
-		
 		
 		public function Jarvis(s:JarvisSingleton){}
 		
@@ -57,7 +57,9 @@ package com
 			UIManager.doResize();
 		}
 		private static function loadViewXml():void{
-			App.loader.loadAssets([{url: PathManager.dUrls[Path.ViewXML],type:ResLoader.TXT}],new Handler(function():void{
+			var loadList:Array = [{url: PathManager.dUrls[Path.ViewXML],type:ResLoader.TXT}];
+			loadList.push({url: PathManager.dUrls[Path.CompSWF],type:ResLoader.SWF})
+			App.loader.loadAssets(loadList,new Handler(function():void{
 				var config:ConfigModel =  ConfigModel.New(Path.ViewXML,["id"],ViewModel,model.initViewModel);
 				AssetsCallBack.configModel(config);
 				StartLoading();
@@ -66,14 +68,9 @@ package com
 		
 		private static function StartLoading():void
 		{
-			eventer.addEventListener(GlobalEvent.STARTLOAD_SUCCESS,startLoadingComplete);
 			UIManager.showView(ModuleDefine.StartLoading);
 		}
 		
-		protected static function startLoadingComplete(event:Event):void
-		{
-			
-		}
 		/**
 		 * 加载界面 
 		 * @param viewId
@@ -91,7 +88,7 @@ package com
 		 * 
 		 */		
 		public static function noticeEvent(eventName:String,param:* = null):Boolean{
-			return broadCast.notice(eventName,param);
+			return eventer.notice(eventName,param);
 		}
 		
 	}

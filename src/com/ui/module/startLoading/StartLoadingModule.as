@@ -2,8 +2,6 @@ package com.ui.module.startLoading
 {
 	import com.ui.UIManager;
 	
-	import flash.events.Event;
-	
 	import morn.dispose.Disposeable;
 	
 	import mornUI.startLoading.StartLoadingModuleUI;
@@ -37,6 +35,12 @@ package com.ui.module.startLoading
 		public function onResize(w:int,h:int):void {
 			icon.x = w*.5-icon.width*.5;
 			icon.y = h*.5-icon.height*.5;
+		}
+		public function showLoadIcon(val:Boolean):void{
+			icon.visible = val;
+		}
+		public function showLoadBg(val:Boolean):void{
+			bg.visible = val;
 		}
 		public function dispose():void
 		{

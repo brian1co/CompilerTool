@@ -9,5 +9,6 @@ package com.data.define
 	public class Path
 	{
 		public static const ViewXML:String = "view.xml";
+		public static const CompSWF:String = "comp.swf";
 	}
 }

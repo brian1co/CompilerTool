@@ -25,6 +25,7 @@ package com.data.define
 			}
 			
 			PathManager.dUrls[Path.ViewXML] = root + URL_CONFIG+Path.ViewXML;
+			PathManager.dUrls[Path.CompSWF] = root + URL_MORN+Path.CompSWF;
 		}
 	}
 }
