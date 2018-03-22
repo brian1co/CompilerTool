@@ -17,6 +17,7 @@ package com.ui
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
+	import flash.display.NativeWindow;
 	import flash.display.SimpleButton;
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -327,5 +328,12 @@ package com.ui
 			if(loadView)
 				loadView.onResize(stageW,stageH);
 		}
+		
+		public static function move(x:int, y:int):void
+		{
+			stage.nativeWindow.x += x;
+			stage.nativeWindow.y += y;
+		}
+		
 	}
 }

@@ -1,8 +1,13 @@
 package com.ui.module.main
 {
+	import com.Jarvis;
+	import com.event.GlobalEvent;
 	import com.ui.module.main.data.TabsData;
+	import com.ui.module.main.data.ToolData;
+	import com.ui.module.main.view.FilesRobocopy;
 	
 	import morn.core.components.Button;
+	import morn.core.components.View;
 	import morn.core.handlers.Handler;
 	
 	import mornUI.main.LeftTabUI;
@@ -16,7 +21,8 @@ package com.ui.module.main
 	public class LeftTab extends LeftTabUI
 	{
 		private var labels:String = "";
-		private var datas:Vector.<TabsData>;
+		private var datas:Vector.<ToolData>;
+		
 		public function LeftTab()
 		{
 			super();
@@ -31,21 +37,13 @@ package com.ui.module.main
 		
 		private function tabClick(index:int):void
 		{
-			
-//			switch(index){
-//				case 0:
-//					break;
-//				case 1:
-//					
-//					break;
-//			}
-//			this.addChild(view);
+			Jarvis.dispatcherEvent(GlobalEvent.SWITCH_VIEW,index);
 		}
-		public function set tabsData(arr:Vector.<TabsData>):void{
+		public function set tabsData(arr:Vector.<ToolData>):void{
 			datas = arr;
 			for (var i:int = 0; i < arr.length; i++) 
 			{
-				var tabsData:TabsData = arr[i];	
+				var tabsData:ToolData = arr[i];	
 				labels += tabsData.label;
 				i!=arr.length-1?labels+=",":null;
 			}
@@ -61,7 +59,7 @@ package com.ui.module.main
 			for (var i:int = 0; i < tabs.items.length; i++) 
 			{
 				var btn:Button = tabs.items[i] as Button;
-				btn.labelFont = "微软雅黑";
+				btn.labelFont = "Arial";
 			}
 		}
 	}

@@ -87,5 +87,14 @@ package com.manager
 		public function getViewModel(viewId:int):ViewModel{
 			return viewMap.getValue(viewId);
 		}
+		public function getViewNameArr():Array{
+			var arr:Array = [];
+			for (var i:int = 0; i < viewMap.values().length; i++) 
+			{
+				arr.push(viewMap.values()[i].moduleName);
+			}
+			
+			return arr;
+		}
 	}
 }

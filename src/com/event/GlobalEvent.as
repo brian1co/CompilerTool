@@ -12,6 +12,8 @@ package com.event
 	{
 		/** 初始化加载成功 */
 		public static const STARTLOAD_SUCCESS:String = "STARTLOAD_SUCCESS";
+		/** 切换界面 */
+		public static const SWITCH_VIEW:String = "SWITCH_VIEW";
 		
 		private var _data:*;
 		public function GlobalEvent(type:String , data:* = null, bubbles:Boolean=false, cancelable:Boolean=false)
