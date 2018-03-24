@@ -12,6 +12,7 @@ package com.util
 	
 	import avmplus.getQualifiedClassName;
 	
+	import json.JSONDecoder;
 	import json.JSONUtil;
 
 	/**
@@ -25,10 +26,12 @@ package com.util
 		private static var appDic:File;
 		private static var rtNum:int = 0;
 		private static var toolHash:HashMap = new HashMap();
+		private static var saveJsonFile:File;
+		private static var saveJsonFileStream:FileStream;
 		public static function init():void
 		{
 			appDic = File.applicationDirectory;
-			loadAppFile(FileConst.SAVEJSON);
+			loadAppFile(appDic.nativePath+"/"+FileConst.SAVEJSON);
 			initToolHash();
 			
 		}
@@ -43,79 +46,31 @@ package com.util
 //				
 //			}
 		}
-		private static function loadAppFile(fileName:String):void{
-			var path:String = appDic.nativePath+"/"+fileName;
-			var file:File = new File(path);
+		private static function loadAppFile(path:String):void{
+			var pth:String = path;
+			var file:File = new File(pth);
 			if(file.exists){
 				var fileStream:FileStream = new FileStream();
 				fileStream.open(file, FileMode.READ);
-				var jso:Object = JSON.parse(fileStream.readUTFBytes(fileStream.bytesAvailable));
+				var readStr:String = fileStream.readUTFBytes(fileStream.bytesAvailable);
+				trace(readStr);
+				var jso:Object = JSONUtil.decode(readStr);
 				fileStream.close();
 				trace(jso);
 			}else{
 				Jarvis.addText(FileConst.SAVEJSON+" 文件不存在");
 				Jarvis.addText("正在生成 "+FileConst.SAVEJSON+ " ...");
-				createFile(FileConst.SAVEJSON);
+				var baseString:String = FormatJsonUtil.createFile(FileConst.SAVEJSON);
+				saveJsonValue = baseString;
+				loadAppFile(pth);
 			}
 			
 		}
 		private static function loadFileByPath(path:String):void{
 			
 		}
-		public static function createFile(fileName:String):void{
-			var fileString:String;
-			if(fileName == FileConst.SAVEJSON){
-				var s:String = "{";
-				var views:Vector.<ToolData> = MainModule.toolDatas;
-				for (var i:int = 0; i < views.length; i++) 
-				{
-					var obj:Object = createToolObj(views[i],0);
-					s += views[i].name + ":"+obj;
-					s += addRT(0)+"}";
-				}
-			}
-			fileString = s;
-		}
-		
-		private static function createToolObj(tData:ToolData,rt:int):String
-		{
-			var s:String = addRT(rt+1)+"{";
-			s += tData.itemName + ":";
-			s += createClassObject(tData.className,rt+1);
-			s += addRT(rt+1)+"}"
-			return s;
-		}
-		
-		private static function createClassObject(className:Class,rt:int):String
-		{
-			var obj:String;
-			switch(className)
-			{
-				case FilesRobocopy:
-				{
-					obj = createFilesRobocopyObject("","",rt);
-					break;
-				}
-					
-				default:
-				{
-					break;
-				}
-			}
-			return obj;
-		}
-		
-		private static function createFilesRobocopyObject(p1:String ="",p2:String="",rt:int = 0):String
-		{
-			if(p1=="")p1='""';
-			if(p2=="")p2='""';
-			var s:String = addRT(rt+1)+"[";
-			s += addRT(rt+2)+"{";
-			s += addRT(rt+3)+'"path1":'+p1+','+addRT(rt+3)+'"path2":'+p2;
-			s += addRT(rt+2)+"}";
-			s += addRT(rt+1)+"]";
-			return s;
-		}
+
+	
 		private static function getViewObject(viewObje:Object):Object{
 			var classNameString:String = getQualifiedClassName(viewObje.className);
 			var obj:Object = {
@@ -145,8 +100,7 @@ package com.util
 		
 		private static function getFilesRobocopyObject():Object
 		{
-			// TODO Auto Generated method stub
-			return null;
+			return null
 		}
 		private static function getPath(path:String = "",index:int = 1):Object{
 			var key:* = "path"+index;
@@ -154,13 +108,24 @@ package com.util
 			object[key] = path;
 			return object;
 		}
-		private static function addRT(rt:int):String{
-			var rts:String = "\r";
-			for (var i:int = 0; i < rt; i++) 
-			{
-				rts+="\t";
-			}
-			return	rts
+	
+		private static function writeAllString(str:String,fileName:String):void{
+			saveJsonFile = new File(appDic.nativePath + "/"+fileName);
+			saveJsonFileStream = new FileStream();
+			saveJsonFileStream.open(saveJsonFile,FileMode.WRITE);
+			saveJsonFileStream.writeUTFBytes(str);
+			saveJsonFileStream.close();
+		}
+		private static function set saveJsonValue(str:String):void{
+			saveJsonFile =new File(appDic.nativePath + "/"+FileConst.SAVEJSON);
+			saveJsonFileStream = new FileStream();
+			setFileText(saveJsonFile,saveJsonFileStream,str);
+			
+		}
+		private static function setFileText(file:File,fileSteam:FileStream,str:String,type:String = FileMode.WRITE):void{
+			fileSteam.open(file,type);
+			fileSteam.writeUTFBytes(str);
+			fileSteam.close();
 		}
 	}
 }
