@@ -53,6 +53,12 @@ package com.ui.module.main
 			this.bg.addEventListener(MouseEvent.MOUSE_DOWN,mouseDown);
 			this.bg.addEventListener(MouseEvent.MOUSE_UP,mouseUp);
 			Jarvis.addEventListener(GlobalEvent.SWITCH_VIEW,switchView);
+			Jarvis.addEventListener(GlobalEvent.SAVEJSON_LOADCOMPLETE,saveJsonComplete);
+		}
+		
+		private function saveJsonComplete(e:GlobalEvent):void
+		{
+			initView();
 		}
 		
 		protected function mouseUp(event:MouseEvent):void
@@ -98,7 +104,6 @@ package com.ui.module.main
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE,addToStage);
 			rightView = viewBox;
-			initView();
 			Jarvis.setConsole(console);
 			for (var i:int = 0; i < objArr.length; i++) 
 			{
@@ -122,6 +127,7 @@ package com.ui.module.main
 		private function removeEvent():void
 		{
 			Jarvis.removeEventListener(GlobalEvent.SWITCH_VIEW,switchView);
+			Jarvis.removeEventListener(GlobalEvent.SAVEJSON_LOADCOMPLETE,saveJsonComplete);
 			this.bg.removeEventListener(MouseEvent.MOUSE_DOWN,mouseDown);
 		}
 	}

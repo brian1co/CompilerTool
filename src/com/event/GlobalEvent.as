@@ -14,6 +14,8 @@ package com.event
 		public static const STARTLOAD_SUCCESS:String = "STARTLOAD_SUCCESS";
 		/** 切换界面 */
 		public static const SWITCH_VIEW:String = "SWITCH_VIEW";
+		/** 加载配置文件成功 */
+		public static const SAVEJSON_LOADCOMPLETE:String = "SAVEJSON_LOADCOMPLETE";
 		
 		private var _data:*;
 		public function GlobalEvent(type:String , data:* = null, bubbles:Boolean=false, cancelable:Boolean=false)

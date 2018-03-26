@@ -2,8 +2,7 @@ package com.util
 {
 	import com.Jarvis;
 	import com.data.define.FileConst;
-	import com.ui.module.main.MainModule;
-	import com.ui.module.main.data.ToolData;
+	import com.event.GlobalEvent;
 	import com.ui.module.main.view.FilesRobocopy;
 	
 	import flash.filesystem.File;
@@ -12,7 +11,6 @@ package com.util
 	
 	import avmplus.getQualifiedClassName;
 	
-	import json.JSONDecoder;
 	import json.JSONUtil;
 
 	/**
@@ -31,7 +29,6 @@ package com.util
 		public static function init():void
 		{
 			appDic = File.applicationDirectory;
-			loadAppFile(appDic.nativePath+"/"+FileConst.SAVEJSON);
 			initToolHash();
 			
 		}
@@ -45,32 +42,20 @@ package com.util
 //				var obj:Object = getViewObject(views[i]);
 //				
 //			}
+			checkSaveJson(function():void{
+				Jarvis.dispatcherEvent(GlobalEvent.SAVEJSON_LOADCOMPLETE);
+			});
 		}
-		private static function loadAppFile(path:String):void{
-			var pth:String = path;
-			var file:File = new File(pth);
-			if(file.exists){
-				var fileStream:FileStream = new FileStream();
-				fileStream.open(file, FileMode.READ);
-				var readStr:String = fileStream.readUTFBytes(fileStream.bytesAvailable);
-				trace(readStr);
-				var jso:Object = JSONUtil.decode(readStr);
-				fileStream.close();
-				trace(jso);
-			}else{
-				Jarvis.addText(FileConst.SAVEJSON+" 文件不存在");
-				Jarvis.addText("正在生成 "+FileConst.SAVEJSON+ " ...");
-				var baseString:String = FormatJsonUtil.createFile(FileConst.SAVEJSON);
-				saveJsonValue = baseString;
-				loadAppFile(pth);
-			}
-			
+		
+		private static function checkSaveJson(loadComplete:Function):void
+		{
+			loadAppFile(appDic.nativePath,FileConst.SAVEJSON,loadComplete);
 		}
+
+		
 		private static function loadFileByPath(path:String):void{
 			
 		}
-
-	
 		private static function getViewObject(viewObje:Object):Object{
 			var classNameString:String = getQualifiedClassName(viewObje.className);
 			var obj:Object = {
@@ -108,7 +93,25 @@ package com.util
 			object[key] = path;
 			return object;
 		}
-	
+		private static function loadAppFile(path:String,name:String,loadComplete:Function):void{
+			var pth:String = path+"/"+name;
+			var file:File = new File(pth);
+			if(file.exists){
+				var fileStream:FileStream = new FileStream();
+				fileStream.open(file, FileMode.READ);
+				var readStr:String = fileStream.readUTFBytes(fileStream.bytesAvailable);
+				var jso:Object = JSONUtil.decode(readStr);
+				fileStream.close();
+				toolHash.put(name,jso);
+				loadComplete();
+			}else{
+				Jarvis.addText(FileConst.SAVEJSON+" 文件不存在");
+				Jarvis.addText("正在生成 "+FileConst.SAVEJSON+ " ...");
+				var baseString:String = FormatJsonUtil.createFile(FileConst.SAVEJSON);
+				saveJsonValue = baseString;
+				loadAppFile(path,name,loadComplete);
+			}
+		}
 		private static function writeAllString(str:String,fileName:String):void{
 			saveJsonFile = new File(appDic.nativePath + "/"+fileName);
 			saveJsonFileStream = new FileStream();
