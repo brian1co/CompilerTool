@@ -16,6 +16,8 @@ package com.event
 		public static const SWITCH_VIEW:String = "SWITCH_VIEW";
 		/** 加载配置文件成功 */
 		public static const SAVEJSON_LOADCOMPLETE:String = "SAVEJSON_LOADCOMPLETE";
+		/** 有修改 */
+		public static const VIEW_CHANGED:String = "VIEW_CHANGED";
 		
 		private var _data:*;
 		public function GlobalEvent(type:String , data:* = null, bubbles:Boolean=false, cancelable:Boolean=false)

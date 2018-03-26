@@ -12,12 +12,24 @@ package com.ui.module.main.data
 		public var name:String;
 		public var itemName:String;
 		public var className:Class;
+		public var classData:Class;
+		private var _isChanged:Boolean = false;
 		public function ToolData(obj:Object)
 		{
 			label = obj.label;
 			name = obj.name;
 			itemName = obj.itemName;
 			className = obj.className;
+			classData = obj.classData;
+		}
+		public function set isChanged(boo:Boolean):void{
+			_isChanged = boo;
+		}
+		public function get isChanged():Boolean{
+			return _isChanged
+		}
+		public function get labelText():String{
+			return isChanged?"*"+label:label;
 		}
 	}
 }

@@ -2,9 +2,10 @@ package com.ui.module.main
 {
 	import com.Jarvis;
 	import com.event.GlobalEvent;
-	import com.ui.module.main.data.TabsData;
 	import com.ui.module.main.data.ToolData;
 	import com.ui.module.main.view.FilesRobocopy;
+	import com.ui.module.main.view.IBaseView;
+	import com.ui.module.main.view.viewData.FilesRobocopyData;
 	import com.util.FileUtil;
 	
 	import flash.events.Event;
@@ -28,22 +29,34 @@ package com.ui.module.main
 		private static var _instance : MainModule;
 		private var movePoint:Point = new Point();
 		private var rightView:Box;
-		private var filesView:FilesRobocopy;
+		private var currentView:IBaseView;
+		
 		public static var toolDatas:Vector.<ToolData> = new Vector.<ToolData>();
 		private static var objArr:Array=[
 			{
 				label:"文件同步",
 				name:"filesRobocopy",
 				itemName:"pathList",
-				className:FilesRobocopy
+				className:FilesRobocopy,
+				classData:FilesRobocopyData
 			}
 		]
 		public function MainModule()
 		{
 			super();
 			initEvent();
+		}
 		
+		private function initView():void
+		{
 			
+			for (var i:int = 0; i < toolDatas.length; i++) 
+			{
+				var view:View = new toolDatas[i].className() as View;
+				view.visible = false;
+				viewBox.addChild(view);
+				Jarvis.views.push(view);
+			}
 		}
 		
 		private function initEvent():void
@@ -58,7 +71,7 @@ package com.ui.module.main
 		
 		private function saveJsonComplete(e:GlobalEvent):void
 		{
-			initView();
+			updateView();
 		}
 		
 		protected function mouseUp(event:MouseEvent):void
@@ -82,22 +95,16 @@ package com.ui.module.main
 		
 		private function switchView(index:int):void
 		{
-			var view:View;
-			switch(index)
-			{
-				case 0:
-				{
-					view = filesView;
-					break;
-				}
-					
-				default:
-				{
-					break;
-				}
+			if(currentView){
+				currentView.hide();
 			}
+			currentView = Jarvis.views[index] ;
+			currentView.initData(objArr[index].name);
+			currentView.show();
 		}
-		private function initView():void{
+		
+		private function updateView():void{
+			
 			tabPanel.tabsData = toolDatas;
 		}
 		protected function addToStage(event:Event):void
@@ -112,6 +119,7 @@ package com.ui.module.main
 				toolDatas.push(tData);
 			}
 			FileUtil.init();
+			initView();
 		}
 		
 		public static function instance():MainModule{

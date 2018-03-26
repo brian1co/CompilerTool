@@ -212,9 +212,8 @@ package com.ui
 			else if(viewModel.type == ModuleDefine.LOAD) {
 				if(_loadView)return;
 				_loadView = $view as StartLoadingModule;
-//				_loadView.showLoadIcon(true);
 				addToLayer(loadView,LAYER_TOOL);
-				UIManager.showMainModule();
+				
 			}else{
 				FrameManager.getInstance().closeAllFrame();
 				SceneManager.getInstance().showScene($view);

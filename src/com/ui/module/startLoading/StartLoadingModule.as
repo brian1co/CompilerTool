@@ -1,6 +1,12 @@
 package com.ui.module.startLoading
 {
+	import com.JUse;
+	import com.Jarvis;
+	import com.event.GlobalEvent;
 	import com.ui.UIManager;
+	import com.util.FileUtil;
+	
+	import flash.events.Event;
 	
 	import morn.dispose.Disposeable;
 	
@@ -18,7 +24,22 @@ package com.ui.module.startLoading
 		public function StartLoadingModule()
 		{
 			super();
+			initEvent();
 			initView();
+		}
+		
+		private function initEvent():void
+		{
+			addEventListener(Event.ADDED_TO_STAGE,addStage);
+			
+		}
+		
+		
+		protected function addStage(event:Event):void
+		{
+			removeEventListener(Event.ADDED_TO_STAGE,addStage);
+			Jarvis.showMainModule();
+			
 		}
 		
 		private function initView():void

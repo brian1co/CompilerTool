@@ -26,7 +26,26 @@ package com.ui.module.main
 		public function LeftTab()
 		{
 			super();
-			initView();
+			initEvent();
+		}
+		
+		private function initEvent():void
+		{
+			Jarvis.addEventListener(GlobalEvent.VIEW_CHANGED,viewChange);
+		}
+		
+		private function viewChange(e:GlobalEvent):void
+		{
+			var viewName:String = e.data;
+			for (var i:int = 0; i < datas.length; i++) 
+			{
+				var toolData:ToolData = datas[i];
+				if(toolData.name == viewName){
+					toolData.isChanged = true;
+					var btn:Button = tabs.items[i] as Button;
+					btn.label = toolData.labelText;
+				}
+			}
 		}
 		
 		private function initView():void
@@ -44,7 +63,7 @@ package com.ui.module.main
 			for (var i:int = 0; i < arr.length; i++) 
 			{
 				var tabsData:ToolData = arr[i];	
-				labels += tabsData.label;
+				labels += tabsData.labelText;
 				i!=arr.length-1?labels+=",":null;
 			}
 			refreshView();
@@ -54,6 +73,7 @@ package com.ui.module.main
 		{
 			tabs.labels = labels;	
 			setTabsFont();
+			initView();
 		}
 		private function setTabsFont():void{
 			for (var i:int = 0; i < tabs.items.length; i++) 

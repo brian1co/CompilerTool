@@ -1,6 +1,5 @@
 package com
 {
-	import com.console.Console;
 	import com.data.define.FileConst;
 	import com.data.define.ModuleDefine;
 	import com.data.define.Path;
@@ -8,17 +7,24 @@ package com
 	import com.data.model.ConfigModel;
 	import com.data.model.ViewModel;
 	import com.event.Eventer;
-	import com.event.GlobalEvent;
 	import com.jarvisUse.ModuleLoading;
 	import com.manager.ModelManager;
 	import com.manager.RegistManager;
 	import com.ui.UIManager;
 	import com.ui.module.main.ConsoleView;
+	import com.ui.module.main.view.IBaseView;
+	import com.ui.module.main.view.viewData.BaseViewData;
 	import com.util.AssetsCallBack;
 	import com.util.FileUtil;
+	import com.util.FormatJsonUtil;
 	
-	import flash.debugger.enterDebugger;
 	import flash.events.Event;
+	import flash.events.FocusEvent;
+	import flash.events.KeyboardEvent;
+	import flash.ui.Keyboard;
+	
+	import json.JSONEncoder;
+	import json.JSONUtil;
 	
 	import morn.core.handlers.Handler;
 	import morn.core.managers.ResLoader;
@@ -34,10 +40,12 @@ package com
 		private static var eventer:Eventer;
 		private static var path:PathManager;
 		private static var moduleLoader:ModuleLoading;
-		private static var m:Main;
 		private static var console:ConsoleView;
-		public function Jarvis(s:JarvisSingleton){}
+		public static var hasChange:Boolean = false;
 		
+		public static var views:Vector.<IBaseView> = new Vector.<IBaseView>();
+		public function Jarvis(s:JarvisSingleton){}
+		public static var isCtrl:Boolean = false;
 		public static function init(main:Main):void{
 			RegistManager.registClass();
 			App.init(main);
@@ -48,12 +56,67 @@ package com
 			moduleLoader = ModuleLoading.JUse::getInstance();
 			initEvent();
 			
+			var ss:Object = {"\r\talskdjalskdj":'E:\\P\\CompilerTool\\bin-debug\\A'};
+			trace(JSONUtil.encode(ss));
 			loadViewXml();
 		}
 		
 		private static function initEvent():void
 		{
 			UIManager.stage.addEventListener(Event.RESIZE,onResize);
+			UIManager.stage.addEventListener(KeyboardEvent.KEY_DOWN,keyDown);
+			UIManager.stage.addEventListener(KeyboardEvent.KEY_UP,keyUP);
+		}
+		
+		protected static function keyUP(event:KeyboardEvent):void
+		{
+			switch(event.keyCode)
+			{
+				case Keyboard.CONTROL:
+				{
+					isCtrl = false;
+					break;
+				}
+				default:
+				{
+					break;
+				}
+			}
+		}
+		protected static function keyDown(event:KeyboardEvent):void
+		{
+			switch(event.keyCode)
+			{
+				case Keyboard.S:
+				{
+					if(isCtrl){
+						saveAllChange();
+					}
+					break;
+				}
+				case Keyboard.CONTROL:
+				{
+					if(!isCtrl){
+						UIManager.stage.focus = UIManager.main;
+						isCtrl = true;
+					}
+					break;
+				}
+					
+					
+				default:
+				{
+					break;
+				}
+			}
+			
+		}
+		private static function saveAllChange():void{
+			FileUtil.saveAllFile();
+		}
+		private static function viewChange():void
+		{
+			hasChange = true;
 		}
 		
 		protected static function onResize(event:Event):void
@@ -75,6 +138,10 @@ package com
 			UIManager.showView(ModuleDefine.StartLoading);
 		}
 		
+		public static function showMainModule():void{
+			UIManager.JUse::showMainModule();
+		}
+			
 		/**
 		 * 加载界面 
 		 * @param viewId
