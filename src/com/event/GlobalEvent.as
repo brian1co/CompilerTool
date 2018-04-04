@@ -18,6 +18,8 @@ package com.event
 		public static const SAVEJSON_LOADCOMPLETE:String = "SAVEJSON_LOADCOMPLETE";
 		/** 有修改 */
 		public static const VIEW_CHANGED:String = "VIEW_CHANGED";
+		/** 保存 */
+		public static const VIEW_SAVE:String = "VIEW_SAVE";
 		
 		private var _data:*;
 		public function GlobalEvent(type:String , data:* = null, bubbles:Boolean=false, cancelable:Boolean=false)

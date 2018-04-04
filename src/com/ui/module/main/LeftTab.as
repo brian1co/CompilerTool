@@ -32,6 +32,21 @@ package com.ui.module.main
 		private function initEvent():void
 		{
 			Jarvis.addEventListener(GlobalEvent.VIEW_CHANGED,viewChange);
+			Jarvis.addEventListener(GlobalEvent.VIEW_SAVE,viewSave);
+		}
+		
+		private function viewSave(e:GlobalEvent):void
+		{
+			var viewName:String = e.data;
+			for (var i:int = 0; i < datas.length; i++) 
+			{
+				var toolData:ToolData = datas[i];
+				if(toolData.name == viewName){
+					toolData.isChanged = false;
+					var btn:Button = tabs.items[i] as Button;
+					btn.label = toolData.labelText;
+				}
+			}
 		}
 		
 		private function viewChange(e:GlobalEvent):void

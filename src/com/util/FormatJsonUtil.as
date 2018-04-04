@@ -18,8 +18,17 @@ package com.util
 		}
 		public static function createFile(fileName:String,finalObj:Object = null):String{
 			var fileString:String;
+			var cmdPath:String = FileConst.CMD;
+			var cmdKey:String ="cmdExe";
 			if(fileName == FileConst.SAVEJSON){
 				var s:String = '{';
+				
+				if(finalObj != null){
+					cmdPath = finalObj[cmdKey];
+					if(cmdPath =="" || cmdPath == null)
+						cmdPath = FileConst.CMD;
+				}
+				s += addRT(1)+'"'+cmdKey+'"'+":"+'"'+cmdPath+'",';
 				var views:Vector.<ToolData> = MainModule.toolDatas;
 				for (var i:int = 0; i < views.length; i++) 
 				{
@@ -33,35 +42,32 @@ package com.util
 				}
 			}
 			fileString = s;
-			return fileString
+			return fileString;
 		}
 		
 		private static function createToolObj(tData:ToolData,rt:int,finalObj:Object = null):String
 		{
 			var finalItem:Object = null;
-			if(finalObj != null)finalItem = finalObj[tData.itemName];
+			var itemNum:int = 1;
+			if(finalObj != null){
+				finalItem = finalObj[tData.itemName];
+				itemNum = finalObj[tData.itemNum];
+			}
 			var s:String = "{";
+			s += '"'+tData.itemNum + '"'+":"+itemNum+",";
 			s += addRT(rt+1)+'"'+tData.itemName + '"'+":";
-			s += createClassObject(tData.className,rt+1,finalItem);
+			s += createClassObject(tData.className,rt+1,finalItem,itemNum);
 			s += addRT(rt)+"}"
 			return s;
 		}
-		private static function createClassObject(className:Class,rt:int,finalObj:Object = null):String
+		private static function createClassObject(className:Class,rt:int,finalObj:Object = null,itemNum:int = 1):String
 		{
 			var obj:String;
-			var item:Object = null;
 			switch(className)
 			{
 				case FilesRobocopy:
 				{
-					var p1:String = "";
-					var p2:String = "";
-					if(finalObj){
-						item = finalObj[0];
-						p1 = item["path1"];
-						p2 = item["path2"];
-					}
-					obj = createFilesRobocopyObject(p1,p2,rt);
+					obj = createFilesRobocopyObject(finalObj,rt,itemNum);
 					break;
 				}
 					
@@ -72,15 +78,45 @@ package com.util
 			}
 			return obj;
 		}
-		private static function createFilesRobocopyObject(p1:String ="",p2:String="",rt:int = 0):String
+		private static function createFilesRobocopyObject(finalObj:Object,rt:int = 0,itemNum:int = 1):String
 		{
-			if(p1=="")p1='""';
-			if(p2=="")p2='""';
+			var p1:String = "";
+			var p2:String = "";
+			var i:int = 0
+			var item:Object = null;
 			var s:String = '[';
+			if(finalObj){
+				for (i = 0; i < finalObj.length; i++) 
+				{
+					item = finalObj[i];
+					p1 = item["path1"];
+					p2 = item["path2"];
+					if(p1=="")p1='""';
+					if(p2=="")p2='""';
+					s += createTwoPathUnit(p1,p2);
+					if(i<finalObj.length-1){
+						s+=",";
+					}
+				}
+			}else{
+				for (i = 0; i < itemNum; i++) 
+				{
+					p1='""';
+					p2='""';
+					s += createTwoPathUnit(p1,p2);
+					if(i<itemNum-1){
+						s+=",";
+					}
+				}
+			}
+			s += addRT(rt)+']';
+			return s;
+		}
+		private static function createTwoPathUnit(p1:String = "",p2:String = "",rt:int = 0):String{
+			var s:String = "";
 			s += addRT(rt+1)+"{";
 			s += addRT(rt+2)+createUnit("path1",p1)+','+addRT(rt+2)+createUnit("path2",p2);
 			s += addRT(rt+1)+"}";
-			s += addRT(rt)+']';
 			return s;
 		}
 		private static function createUnit(unityItem:String,unitValue:String= "",rt:int = 0):String{
@@ -93,12 +129,13 @@ package com.util
 			return unitStr;
 		}
 		private static function addRT(rt:int):String{
-			var rts:String = "\r";
-			for (var i:int = 0; i < rt; i++) 
-			{
-				rts+="\t";
-			}
-			return	rts
+//			var rts:String = "\r";
+//			for (var i:int = 0; i < rt; i++) 
+//			{
+////				rts+="\t";
+//			}
+//			return	rts
+			return "";
 		}
 		public static function formatXiegang(pStr:String):String{
 			var arr:Array = pStr.split("/");

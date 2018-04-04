@@ -7,24 +7,24 @@ package com
 	import com.data.model.ConfigModel;
 	import com.data.model.ViewModel;
 	import com.event.Eventer;
+	import com.google.zxing.BarcodeFormat;
+	import com.google.zxing.EncodeHintType;
+	import com.google.zxing.common.BitMatrix;
+	import com.google.zxing.common.flexdatatypes.HashTable;
+	import com.google.zxing.qrcode.QRCodeWriter;
 	import com.jarvisUse.ModuleLoading;
 	import com.manager.ModelManager;
 	import com.manager.RegistManager;
 	import com.ui.UIManager;
 	import com.ui.module.main.ConsoleView;
 	import com.ui.module.main.view.IBaseView;
-	import com.ui.module.main.view.viewData.BaseViewData;
 	import com.util.AssetsCallBack;
 	import com.util.FileUtil;
-	import com.util.FormatJsonUtil;
 	
+	import flash.display.BitmapData;
 	import flash.events.Event;
-	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
-	
-	import json.JSONEncoder;
-	import json.JSONUtil;
 	
 	import morn.core.handlers.Handler;
 	import morn.core.managers.ResLoader;
@@ -56,8 +56,15 @@ package com
 			moduleLoader = ModuleLoading.JUse::getInstance();
 			initEvent();
 			
-			var ss:Object = {"\r\talskdjalskdj":'E:\\P\\CompilerTool\\bin-debug\\A'};
-			trace(JSONUtil.encode(ss));
+//			var ss:Object = {"\r\talskdjalskdj":{
+//										"pathList":[
+//														{"path1":'E:\P\CompilerTool\bin-debug\A'}
+//													]
+//													
+//												}
+//											};
+//			var zz:String = JSONUtil.encode(ss);
+//			trace(JSONUtil.decode(zz));
 			loadViewXml();
 		}
 		
@@ -91,6 +98,7 @@ package com
 				{
 					if(isCtrl){
 						saveAllChange();
+						isCtrl = false;
 					}
 					break;
 				}
@@ -189,6 +197,53 @@ package com
 		}
 		public static function addText(str:String,strType:String = FileConst.SYS_DOING):void{
 			console.appendText(str,strType);
+		}
+		public static function copy():void{
+			FileUtil.copy();
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/**
+		 * 二维码  
+		 * @param qrStr 任何字符
+		 * @return 
+		 * 
+		 */		
+		public static function QRtest(qrStr:String):BitmapData{
+			var p:Object = new Object();
+			p.charset = "UTF-8";
+			var _param:HashTable = new HashTable(2);
+			_param.Add(EncodeHintType.CHARACTER_SET, p.charset);
+			var qr:QRCodeWriter = new QRCodeWriter();
+			var bitM:BitMatrix = qr.encode(qrStr,BarcodeFormat.QR_CODE,0,0,_param) as BitMatrix;
+			var w:int = bitM.width, h:int = bitM.height;
+			var bmp:BitmapData = new BitmapData(w, h);
+			for (var i:int = 0; i < w; i++) {
+				for (var j:int = 0; j < h;j++) {
+					bmp.setPixel(i, j, bitM._get(i,j)?0:0xffffff);
+				}
+			}
+			return bmp;
 		}
 	}
 }

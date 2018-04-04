@@ -1,5 +1,8 @@
 package com.ui.component
 {
+	import com.ui.component.data.PathItemData;
+	import com.ui.component.data.TwoPathItemData;
+	
 	import mornUI.com.TwoPathItemUI;
 	
 	/**
@@ -10,34 +13,33 @@ package com.ui.component
 	 */
 	public class TwoPathItem extends TwoPathItemUI implements IBaseItem
 	{
-		private var pathData1:String;
-		private var pathData2:String;
+		private var pathData1:PathItemData;
+		private var pathData2:PathItemData;
 		private var viewClassName:String;
-		private var twoObj:Object;
+		private var twoObj:TwoPathItemData;
 		public function TwoPathItem()
 		{
 			super();
 		}
-		public function set pathData(twoObj:Object):void{
+		public function set pathData(twoObj:TwoPathItemData):void{
 			twoObj = twoObj;
 			pathData1 = twoObj.path1;
 			pathData2 = twoObj.path2;
-			path1.path = pathData1;
-			path2.path = pathData2;
+			path1.pathData = pathData1;
+			path2.pathData = pathData2;
 			path1.ViewClassName = viewClassName;
 			path2.ViewClassName = viewClassName;
 		}
-		public function get jsonObject():Object{
-			twoObj.path1 = path1.jsonObject;
-			twoObj.path2 = path2.jsonObject;
+		public function get jsonObject():*{
+//			twoObj.path1.data = path1.jsonObject.path;
+//			twoObj.path2.data = path2.jsonObject.path;
 			return twoObj;
 		}
 		public function set ViewClassName(className:String):void{
 			viewClassName = className;
 		}
 		public function save():void{
-			path1.save();
-			path2.save();
+			twoObj.save();
 		}
 	}
 }

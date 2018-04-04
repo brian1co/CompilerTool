@@ -36,6 +36,7 @@ package com.ui.module.main
 			{
 				label:"文件同步",
 				name:"filesRobocopy",
+				itemNum:"itemNum",
 				itemName:"pathList",
 				className:FilesRobocopy,
 				classData:FilesRobocopyData
@@ -67,6 +68,10 @@ package com.ui.module.main
 			this.bg.addEventListener(MouseEvent.MOUSE_UP,mouseUp);
 			Jarvis.addEventListener(GlobalEvent.SWITCH_VIEW,switchView);
 			Jarvis.addEventListener(GlobalEvent.SAVEJSON_LOADCOMPLETE,saveJsonComplete);
+		}
+		
+		protected function clickHande(event:MouseEvent):void
+		{
 		}
 		
 		private function saveJsonComplete(e:GlobalEvent):void

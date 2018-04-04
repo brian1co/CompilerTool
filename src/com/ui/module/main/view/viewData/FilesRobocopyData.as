@@ -1,5 +1,7 @@
 package com.ui.module.main.view.viewData
 {
+	import com.ui.component.data.TwoPathItemData;
+
 	/**
 	 * @desc	:	FilesRobocopyData
 	 * @author	:	brian.li
@@ -8,24 +10,44 @@ package com.ui.module.main.view.viewData
 	 */
 	public class FilesRobocopyData extends BaseViewData
 	{
-		public var path1:String ="";
-		public var path2:String ="";
-		public function FilesRobocopyData(obj:Object)
+		public var pathList:Array = [];
+		public function FilesRobocopyData(obj:Object,$itemNum:int = 0)
 		{
-			super(obj);
+			super(obj,$itemNum);
 		}
-		override public function setViewData(obj:Object):void{
-			path1 = obj.pathItem[0].path1;
-			path2 = obj.pathItem[0].path2;
-			save();
+		override public function setViewData(obj:*):void{
+			var tArr:Array = obj as Array;
+			for (var i:int = 0; i < tArr.length; i++) 
+			{
+				var twoPathData:TwoPathItemData = new TwoPathItemData();
+				twoPathData.pathData = tArr[i];
+				pathList.push(twoPathData); 
+			}
+			
 		}
 		public function save():void{
-			var p1:String = path1
-			jsonObject.pathList = [{
-				"path1":path1,
-				"path2":path2
-			}]
+			var tArr:Array = [];
+			for (var i:int = 0; i < pathList.length; i++) 
+			{
+				var obj:Object = {};
+				var pObj:TwoPathItemData = pathList[i];
+				pObj.save();
+				obj.path1 = pObj.path1.path;
+				obj.path2 = pObj.path2.path;
+				tArr.push(obj);
+			}
+			jsonObject.pathList = tArr;
+			jsonObject.itemNum = itemNum;
 		}
 		
+		override public function hasChange():Boolean{
+			var flag:Boolean = false;
+			for (var i:int = 0; i < pathList.length; i++) 
+			{
+				var pObj:TwoPathItemData = pathList[i];
+				if(pObj.checkChange())flag = true;
+			}
+			return flag;
+		}
 	}
 }

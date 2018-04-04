@@ -11,6 +11,7 @@ package com.ui.module.main.data
 		public var label:String;
 		public var name:String;
 		public var itemName:String;
+		public var itemNum:String;
 		public var className:Class;
 		public var classData:Class;
 		private var _isChanged:Boolean = false;
@@ -18,6 +19,7 @@ package com.ui.module.main.data
 		{
 			label = obj.label;
 			name = obj.name;
+			itemNum = obj.itemNum;
 			itemName = obj.itemName;
 			className = obj.className;
 			classData = obj.classData;

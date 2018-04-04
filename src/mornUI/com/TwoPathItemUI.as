@@ -8,8 +8,8 @@ package mornUI.com {
 		public var path1:PathItem = null;
 		public var path2:PathItem = null;
 		protected static var uiXML:XML =
-			<View width="600" height="120">
-			  <ItemBg x="-20" width="620" height="120" var="itemBg" runtime="com.ui.component.ItemBg"/>
+			<View width="600" height="120" mouseChildren="true" mouseEnabled="false">
+			  <ItemBg x="-20" width="620" height="120" var="itemBg" runtime="com.ui.component.ItemBg" mouseEnabled="false" disabled="true"/>
 			  <PathItem x="10" y="26" runtime="com.ui.component.PathItem" var="path1"/>
 			  <PathItem x="10" y="66" runtime="com.ui.component.PathItem" var="path2"/>
 			</View>;

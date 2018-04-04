@@ -9,14 +9,20 @@ package com.ui.module.main.view.viewData
 	public class BaseViewData implements IBaseViewData
 	{
 		public var jsonObject:Object = {};
-		public function BaseViewData(obj:Object)
+		public var itemNum:int;
+		public function BaseViewData(obj:*,$itemNum:int = 0)
 		{
+			itemNum = $itemNum;
+			setViewData(obj);
 		}
-		public function setViewData(obj:Object):void{
+		public function setViewData(obj:*):void{
 			
 		}
 		public function get jsonString():String{
 			return "";
+		}
+		public function hasChange():Boolean{
+			return false;
 		}
 	}
 }

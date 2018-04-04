@@ -2,6 +2,7 @@ package com.ui.component
 {
 	import com.Jarvis;
 	import com.event.GlobalEvent;
+	import com.ui.component.data.PathItemData;
 	import com.util.FileUtil;
 	
 	import flash.events.Event;
@@ -19,6 +20,7 @@ package com.ui.component
 	public class PathItem extends PathItemUI implements IBaseItem
 	{
 		private var _path:String = "";
+		private var _pathData:PathItemData;
 		public var tempPath:String = "";
 		private var file:File;
 		private var isChange:Boolean = false;
@@ -26,14 +28,20 @@ package com.ui.component
 		public function PathItem()
 		{
 			super();
+			initView();
 			initEvent();
+		}
+		
+		private function initView():void
+		{
+			input.isHtml = false;
 		}
 		
 		private function initEvent():void
 		{
 			liulanBtn.addEventListener(MouseEvent.CLICK,liulanFunc);	
 		}
-		public function get jsonObject():Object{
+		public function get jsonObject():*{
 			return path;
 		}
 		public function set ViewClassName(className:String):void{
@@ -42,16 +50,16 @@ package com.ui.component
 		protected function inputText(event:Event):void
 		{
 			if(Jarvis.isCtrl){
-				input.text = tempPath;
+				input.text = _path;
 				return;
 			};
-			tempPath = input.text;
+			_pathData.data = input.text;
 			Jarvis.dispatcherEvent(GlobalEvent.VIEW_CHANGED,viewClassName);
 		}
 		
 		protected function liulanFunc(event:MouseEvent):void
 		{
-			if(file == null||path == "" || path == "请选择路径"){
+			if(file == null||path == "" ){
 				file = FileUtil.browserNew();
 				file.addEventListener(Event.SELECT,selectDic);
 			}else{
@@ -63,19 +71,23 @@ package com.ui.component
 		{
 			path = file.nativePath;
 		}
-		public function save():void{
-			_path = tempPath;
+		public function set pathData(pathObject:PathItemData):void{
+			_pathData = pathObject;
+			path = _pathData.path;
 		}
-		public function set path(pathStr:String):void{
-			_path = pathStr;
-			input.text = _path==""?"请选择路径":_path;
-			tempPath = input.text;
+		public function set path($path:String):void{
+			_path = $path;
+			input.text = _path;
+			_pathData.data = _path;
 			if(!input.hasEventListener(Event.CHANGE)){
 				input.addEventListener(Event.CHANGE,inputText);	
 			}
 		}
+		public function get pathData():PathItemData{
+			return _pathData;
+		}
 		public function get path():String{
-			return _path;
+			return pathData.path;
 		}
 		public function dispose():void{
 			file.removeEventListener(Event.SELECT,selectDic);
