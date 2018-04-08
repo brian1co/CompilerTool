@@ -19,7 +19,8 @@ package com.ui.module.main
 		}
 		public function appendText(str:String,strType:String):void{
 			var fStr:String = formatStr(str,strType);
-			textArea.appendText(fStr+"<br>");
+//			textArea.appendText(fStr+"<br>");
+			textArea.appendText(fStr);
 			textArea.scrollTo(textArea.textField.numLines);
 		}
 		

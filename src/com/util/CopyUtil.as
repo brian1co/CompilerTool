@@ -63,18 +63,27 @@ package com.util
 		{
 			var stdOut:IDataInput = IDataInput(event.target.standardOutput);
 			var data:String = stdOut.readUTFBytes(process.standardOutput.bytesAvailable); 
-			data = data.replace(
-			trace("NewGot: ", data); 
+//			data = data.replace(
+			
+			trace("NewGot: ", data);
 		}
 		
 		protected static function outputHandler(event:ProgressEvent):void
 		{
 			var stdOut:IDataInput = IDataInput(event.target.standardOutput);
-			var data:String = stdOut.readUTFBytes(process.standardOutput.bytesAvailable); 
+			var data:String = stdOut.readMultiByte(process.standardOutput.bytesAvailable,"ANSI"); 
+//			data = data.replace("\r\n","");
+//			data = data.replace("\r\n\r\n","\r\n");
+//			data = data.replace("\r\n","");
+//			data = data.replace(/\\r/g, "");
+//			trace(data.search("\n"));
+//			data = data.replace(/\\n/g, " ");
+			
 			Jarvis.addText(data);
 		}
 		protected static function packageOverHandler(event:NativeProcessExitEvent):void
 		{
+//			trace(Jarvis.console.textArea.text);
 			trace("NativeProcessExitEvent:",event);
 		}
 	}

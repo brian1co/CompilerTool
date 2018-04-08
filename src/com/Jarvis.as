@@ -40,7 +40,7 @@ package com
 		private static var eventer:Eventer;
 		private static var path:PathManager;
 		private static var moduleLoader:ModuleLoading;
-		private static var console:ConsoleView;
+		public static var console:ConsoleView;
 		public static var hasChange:Boolean = false;
 		
 		public static var views:Vector.<IBaseView> = new Vector.<IBaseView>();
@@ -56,15 +56,6 @@ package com
 			moduleLoader = ModuleLoading.JUse::getInstance();
 			initEvent();
 			
-//			var ss:Object = {"\r\talskdjalskdj":{
-//										"pathList":[
-//														{"path1":'E:\P\CompilerTool\bin-debug\A'}
-//													]
-//													
-//												}
-//											};
-//			var zz:String = JSONUtil.encode(ss);
-//			trace(JSONUtil.decode(zz));
 			loadViewXml();
 		}
 		
